@@ -1,5 +1,6 @@
 package view;
-import Model.Kursus;
+
+import model.Kursus;
 import javax.swing.JOptionPane;
 
 public class FormPendaftaranAwal extends javax.swing.JFrame {
@@ -9,7 +10,7 @@ public FormPendaftaranAwal() {
 
     cmbKursus.setModel(new javax.swing.DefaultComboBoxModel<>(
         new String[] {
-            "Java",
+            "Java Desktop Fundamental",
             "Data Science",
             "UI/UX"
         }
@@ -24,7 +25,7 @@ private double hitungTotal(double biaya, int jumlah) {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNamaPendaftar = new javax.swing.JTextField();
         txtBiaya = new javax.swing.JTextField();
         txtJumlah = new javax.swing.JTextField();
         cmbKursus = new javax.swing.JComboBox<>();
@@ -45,11 +46,11 @@ private double hitungTotal(double biaya, int jumlah) {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Nama");
+        jLabel1.setText("Nama Pendaftar");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtNamaPendaftar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtNamaPendaftarActionPerformed(evt);
             }
         });
 
@@ -119,7 +120,7 @@ private double hitungTotal(double biaya, int jumlah) {
                 .addComponent(jScrollPane1)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(257, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(129, 129, 129))
             .addGroup(layout.createSequentialGroup()
@@ -150,11 +151,11 @@ private double hitungTotal(double biaya, int jumlah) {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(cmbKursus, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(1, 1, 1))
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNamaPendaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtKodeKursus, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(2, 2, 2))))
                     .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +168,7 @@ private double hitungTotal(double biaya, int jumlah) {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNamaPendaftar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -202,68 +203,66 @@ private double hitungTotal(double biaya, int jumlah) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbKursusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbKursusActionPerformed
-cmbKursus.setModel(new javax.swing.DefaultComboBoxModel<>(
-    new String[] {
-        "Java",
-        "Data Science",
-        "UI/UX"
-    }
-));
+    String namaKursus = (String) cmbKursus.getSelectedItem();
+    System.out.println("Kursus dipilih: " + namaKursus);
     }//GEN-LAST:event_cmbKursusActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtNamaPendaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaPendaftarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtNamaPendaftarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-jTextField1.setText("");
-txtBiaya.setText("");
-txtJumlah.setText("");
+ txtKodeKursus.setText("");
+    txtNamaPendaftar.setText("");
+    cmbLevel.setSelectedIndex(0);
+    txtBiaya.setText("");
+    txtDiskon.setText("");
+    jTextArea1.setText("");
 
-// Mengembalikan combo box ke pilihan pertama
-cmbKursus.setSelectedIndex(0);
-
-// Mengosongkan text area
-jTextArea1.setText("");
-
-// Mengembalikan fokus ke input nama
-txtBiaya.requestFocus();
+    txtKodeKursus.requestFocus();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-try {
+ try {
+        // Mengambil data dari form
+        String kode = txtKodeKursus.getText().trim();
+        String namaPendaftar = txtNamaPendaftar.getText().trim();
+        String namaKursus = cmbKursus.getSelectedItem().toString();
+        String level = cmbLevel.getSelectedItem().toString();
 
-    // 1. Mengambil data dari inputan form
-    String nama = jTextField1.getText();
-    String biayaStr = txtBiaya.getText();
-    String jumlahStr = txtJumlah.getText();
-    String kursus = cmbKursus.getSelectedItem().toString();
+        double biaya = Double.parseDouble(txtBiaya.getText().trim());
+        double diskon = Double.parseDouble(txtDiskon.getText().trim());
 
-    // 2. Mengubah String menjadi Integer
-    int biaya = Integer.parseInt(biayaStr);
-    int jumlah = Integer.parseInt(jumlahStr);
+        // Membuat object Kursus
+        Kursus kursus = new Kursus(
+            kode, namaKursus, level, biaya
+        );
 
-    // 3. Menghitung total biaya
-    int totalBiaya = biaya * jumlah;
+        // Menghitung biaya setelah diskon
+        double total = kursus.hitungBiayaSetelahDiskon(diskon);
 
-    // 4. Menampilkan hasil
-    jTextArea1.setText("--- BUKTI PENDAFTARAN ---\n");
-    jTextArea1.append("Nama Pendaftar\t: " + nama + "\n");
-    jTextArea1.append("Pilihan Kursus\t: " + kursus + "\n");
-    jTextArea1.append("Biaya per Kursus\t: Rp " + biaya + "\n");
-    jTextArea1.append("Jumlah\t\t: " + jumlah + "\n");
-    jTextArea1.append("---------------------------\n");
-    jTextArea1.append("Total Bayar\t: Rp " + totalBiaya + "\n");
+        // Menampilkan hasil
+        String pesan = "--- BUKTI PENDAFTARAN ---\n"
+            + "Nama Pendaftar: " + namaPendaftar + "\n"
+            + "Kode Kursus: " + kode + "\n"
+            + "Nama Kursus: " + namaKursus + "\n"
+            + "Level: " + level + "\n"
+            + "Biaya Awal: Rp" + String.format("%,.0f", biaya) + "\n"
+            + "Diskon: " + diskon + "%\n"
+            + "Biaya Akhir: Rp" + String.format("%,.0f", total);
 
-} catch (NumberFormatException e) {
+        jTextArea1.setText(pesan);
 
-    javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Biaya dan Jumlah harus berupa angka!",
-        "Error",
-        javax.swing.JOptionPane.ERROR_MESSAGE
-    );
-}
+        JOptionPane.showMessageDialog(this, pesan);
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Biaya dan diskon harus berupa angka!",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void txtKodeKursusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKodeKursusActionPerformed
@@ -328,10 +327,10 @@ try {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtBiaya;
     private javax.swing.JTextField txtDiskon;
     private javax.swing.JTextField txtJumlah;
     private javax.swing.JTextField txtKodeKursus;
+    private javax.swing.JTextField txtNamaPendaftar;
     // End of variables declaration//GEN-END:variables
 }
