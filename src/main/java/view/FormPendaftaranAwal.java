@@ -9,12 +9,14 @@ public FormPendaftaranAwal() {
     initComponents();
 
     cmbKursus.setModel(new javax.swing.DefaultComboBoxModel<>(
-        new String[] {
-            "Java Desktop Fundamental",
-            "Data Science",
-            "UI/UX"
-        }
-    ));
+    new String[] {
+        "-- Pilih Kursus --",
+        "Java",
+        "Data Science",
+        "UI/UX"
+    }
+));
+cmbKursus.setSelectedIndex(0);
 }
 
 private double hitungTotal(double biaya, int jumlah) {
@@ -212,53 +214,164 @@ private double hitungTotal(double biaya, int jumlah) {
     }//GEN-LAST:event_txtNamaPendaftarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
- txtKodeKursus.setText("");
-    txtNamaPendaftar.setText("");
-    cmbLevel.setSelectedIndex(0);
-    txtBiaya.setText("");
-    txtDiskon.setText("");
-    jTextArea1.setText("");
+ int pilihan = JOptionPane.showConfirmDialog(
+        this,
+        "Kosongkan seluruh input?",
+        "Konfirmasi Reset",
+        JOptionPane.YES_NO_OPTION,
+        JOptionPane.QUESTION_MESSAGE
+    );
 
-    txtKodeKursus.requestFocus();
+    if (pilihan == JOptionPane.YES_OPTION) {
+        txtKodeKursus.setText("");
+        txtNamaPendaftar.setText("");
+        txtBiaya.setText("");
+        txtJumlah.setText("");
+        txtDiskon.setText("");
+
+        cmbKursus.setSelectedIndex(0);
+        cmbLevel.setSelectedIndex(0);
+
+        jTextArea1.setText("");
+
+        txtKodeKursus.requestFocus();
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- try {
-        // Mengambil data dari form
-        String kode = txtKodeKursus.getText().trim();
-        String namaPendaftar = txtNamaPendaftar.getText().trim();
-        String namaKursus = cmbKursus.getSelectedItem().toString();
-        String level = cmbLevel.getSelectedItem().toString();
 
-        double biaya = Double.parseDouble(txtBiaya.getText().trim());
-        double diskon = Double.parseDouble(txtDiskon.getText().trim());
+        // 1. Mengambil data teks dari form
+    String kode = txtKodeKursus.getText().trim();
+    String namaPendaftar = txtNamaPendaftar.getText().trim();
 
-        // Membuat object Kursus
+    // 2. Validasi nama pendaftar
+    if (namaPendaftar.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Nama peserta wajib diisi.",
+            "Validasi",
+            JOptionPane.WARNING_MESSAGE
+        );
+        txtNamaPendaftar.requestFocus();
+        return;
+    }
+
+    // 3. Validasi kode kursus
+    if (kode.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Kode kursus wajib diisi.",
+            "Validasi",
+            JOptionPane.WARNING_MESSAGE
+        );
+        txtKodeKursus.requestFocus();
+        return;
+    }
+
+    // 4. Validasi pilihan kursus
+    if (cmbKursus.getSelectedIndex() == 0) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Silakan pilih kursus terlebih dahulu.",
+            "Validasi",
+            JOptionPane.WARNING_MESSAGE
+        );
+        cmbKursus.requestFocus();
+        return;
+    }
+
+    // 5. Validasi biaya dan diskon
+    try {
+        String namaKursus =
+            cmbKursus.getSelectedItem().toString();
+        String level =
+            cmbLevel.getSelectedItem().toString();
+
+        String teksBiaya = txtBiaya.getText().trim();
+        String teksDiskon = txtDiskon.getText().trim();
+
+        if (teksBiaya.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Biaya wajib diisi.",
+                "Validasi",
+                JOptionPane.WARNING_MESSAGE
+            );
+            txtBiaya.requestFocus();
+            return;
+        }
+
+        if (teksDiskon.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Diskon wajib diisi.",
+                "Validasi",
+                JOptionPane.WARNING_MESSAGE
+            );
+            txtDiskon.requestFocus();
+            return;
+        }
+
+        double biaya = Double.parseDouble(teksBiaya);
+        double diskon = Double.parseDouble(teksDiskon);
+
+        if (biaya < 0) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Biaya tidak boleh negatif.",
+                "Validasi",
+                JOptionPane.WARNING_MESSAGE
+            );
+            txtBiaya.requestFocus();
+            return;
+        }
+
+        if (diskon < 0 || diskon > 100) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Diskon harus antara 0 sampai 100 persen.",
+                "Validasi",
+                JOptionPane.WARNING_MESSAGE
+            );
+            txtDiskon.requestFocus();
+            return;
+        }
+
+        // 6. Membuat objek Kursus
         Kursus kursus = new Kursus(
             kode, namaKursus, level, biaya
         );
 
-        // Menghitung biaya setelah diskon
-        double total = kursus.hitungBiayaSetelahDiskon(diskon);
+        // 7. Menghitung biaya setelah diskon
+        double total =
+            kursus.hitungBiayaSetelahDiskon(diskon);
 
-        // Menampilkan hasil
+        // 8. Menyusun bukti pendaftaran
         String pesan = "--- BUKTI PENDAFTARAN ---\n"
             + "Nama Pendaftar: " + namaPendaftar + "\n"
             + "Kode Kursus: " + kode + "\n"
             + "Nama Kursus: " + namaKursus + "\n"
             + "Level: " + level + "\n"
-            + "Biaya Awal: Rp" + String.format("%,.0f", biaya) + "\n"
+            + "Biaya Awal: Rp"
+            + String.format("%,.0f", biaya) + "\n"
             + "Diskon: " + diskon + "%\n"
-            + "Biaya Akhir: Rp" + String.format("%,.0f", total);
+            + "Biaya Akhir: Rp"
+            + String.format("%,.0f", total);
 
+        // 9. Menampilkan hasil
         jTextArea1.setText(pesan);
 
-        JOptionPane.showMessageDialog(this, pesan);
+        JOptionPane.showMessageDialog(
+            this,
+            pesan,
+            "Pendaftaran Berhasil",
+            JOptionPane.INFORMATION_MESSAGE
+        );
 
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(
             this,
-            "Biaya dan diskon harus berupa angka!",
+            "Biaya dan diskon harus berupa angka yang valid!",
             "Error",
             JOptionPane.ERROR_MESSAGE
         );
